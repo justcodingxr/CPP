@@ -1,0 +1,57 @@
+bool is_empty(string &s){//缺陷：无法传入const参数，字面值参数等，s容易误改
+						//需要修改对象时用普通引用
+	return s.empty();
+	}
+bool is_empty(const string &s){//不需要修改对象用const更好
+	return s.empty();
+	}
+
+
+实现交换功能
+
+指针
+#include <iostream>
+using namespace std;
+
+int pswap(int *pa, int *pb) {
+	int temp;
+	temp = *pa;
+	*pa = *pb;
+	*pb = temp;
+	return 0;
+}
+
+
+int main() {
+	int a, b;
+	cin >> a >> b;
+
+	int *pa = &a;
+	int *pb = &b;
+	pswap(pa, pb);
+	cout << a << " " << b << endl;
+	return 0;
+}
+	
+引用
+	#include <iostream>
+using namespace std;
+
+int yswap(int &a, int &b) {
+	int temp;
+	temp = a;
+	a = b;
+	b = temp;
+	return 0;
+}
+
+
+int main() {
+	int a, b;
+	cin >> a >> b;
+
+	yswap(a, b);
+	cout << a << " " << b << endl;
+	return 0;
+}
+	return 0

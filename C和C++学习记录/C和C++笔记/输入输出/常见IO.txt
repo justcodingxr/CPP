@@ -1,0 +1,31 @@
+输入输出：设备输入到暂存区，暂存区输出到设备
+istream 输入流类型
+ostream 输出流类型
+cin 标准输入流对象
+cout 标准输出流对象
+cerr 标准错误输出对象
+getline 从一个给定的istream读取一行存入一个string对象
+
+
+标准库使我们 可以忽视设备类型和字符大小，无差别的应用于
+普通流文件流string流以及char和宽字符流版本。
+
+IO对象无拷贝和赋值
+
+管理条件状态
+restate（）返回流的当前状态，类型strm::iostate
+
+auto prestate=cin.rdstate();//保存状态
+cin.clear()使流状态复位，流有效
+function（cin）使用流
+cin.setstate(prestate);//将流置为之前状态
+
+管理输出缓冲机制
+可能立即打印，可能暂存在输出缓冲区随后一起打印；
+因为存在缓冲机制，操作系统可以将程序的多个输出操作组合为单一的系统级写写操作。
+
+刷新缓冲
+endl换行且刷新
+ends空格且刷新
+flush直接刷新
+unitbuf每次都刷新

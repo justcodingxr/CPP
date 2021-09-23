@@ -1,0 +1,112 @@
+//cin结束标记是空格,制表符。getline结束标记换行。
+//enter不会输入cin,cin会忽视空格，制表，enter，不会忽视\n（自己输入的）
+//getchar（）可以接收enter，和其他字符
+//cin和getline循环读取，都是到文件结尾或异常为止，除非主动结束
+//cin 用getchar()接收enter作为while结束标志
+//getline(cin, str)不会忽视空格，制表
+//因为直接enter换行getline会是空字符串，以此为while结束
+
+//区分while结束和每次读取结束 两个结束标记，读取结束标记是分割字符的
+一、读取一行或者多行字符串，空格也读取
+
+while(getline(cin>>string s){
+		
+		if(string s=="")//因为直接enter换行getline会是空字符串，以此为while结束
+						//两次enter才结束读取
+			break;
+	}
+
+二、读取一行多个字符串，不读取空格
+while(cin>>string s){
+		
+		if(getchar（）=='\n')//getchar()接收cin忽视的换行enter作为while结束标志
+			break;
+	}
+
+三、读取一行多个字符忽视空格（有多种控制结束的方法）
+while (cin >> char c) {
+
+		//避免输入永远无法止步方法一
+		if (getchar() == '\n')//getchar()接收cin忽视的换行enter作为结束标志
+			break;
+	}
+	
+	//避免输入永远无法止步方法二	
+	int i = 0;
+	while (cin >> c) {
+		i++;
+		if (i >= 19) {
+			break;
+		}
+	}
+三、读取多行多个字符忽视空格
+	方法一：
+	
+	方法二
+	int i = 0;
+	while (cin >> c) {
+		i++;
+		if (i >= 19) {
+			break;
+		}
+	}
+
+四、读取一行 多个字符 不忽视空格	
+	char c;
+	while (cin.get(c)) {
+	
+		if(getchar（）=='\n')//getchar()接收cin忽视的换行enter作为while结束标志
+			break;
+	}
+	
+	方法二：
+	int i=0；
+	char c;
+	while (cin.get(c)) {
+	
+		i++;
+		if (i >= 19) {
+			break;
+		}
+	}
+四、读取多行 多个字符 不忽视空格	
+	
+	方法二：
+	int i=0；
+	char c;
+	while (cin.get(c)) {
+	
+		i++;
+		if (i >= 19) {
+			break;
+		}
+	}
+五、交互法，单步读取字符串，或者整数，字符
+	while (1) {
+		//读取string，n
+		cout << "输入string：" << endl;
+		cin >> s;
+		cout << endl << "输入整数n：" << endl;
+		cin >> n;
+		cout << "继续？y" << endl;
+		char ch;
+		cin >> ch;
+
+		//交互
+		if (ch != 'y')
+			break;
+		else
+			continue;
+	}
+六、总结
+1.cin以空格制表符为读取结束标记，作为数据分割；cin会忽视enter不会忽视手打 \n
+2.cin读取字符和字符串，都要设计一种方法结束while，比如getchar，计数方法，特殊字符法等，还有就是交互方法
+3.get.cin（）读取char时可以忽视空格。
+4.getline（）以enter作为读取结束标记，作为数据分割；读取string时直接enter得到一个空串；
+5.很多while可以自己设计结束方法，比如计数，交互。
+
+
+
+
+
+

@@ -1,0 +1,236 @@
+	所有函数之外的变量，具有全局性，生命直到程序结束；
+	静态变量，静态局部变量都具有全局性；静态局部变量不会随函数快结束；
+	这些变量存在 静态内存。
+
+	函数中的非静态对象存在 栈内存。
+
+	静态内存和栈内存中的对象 编译器会自动创建和销毁。
+
+	每个程序还有一个内存池（堆），被称作自由空间；
+
+	程序利用堆来动态分配内存，存储 运行时创建的对象；
+	动态对象的存储期要程序来控制，必须显式销毁。
+
+#memory
+shared_ptr	允许多个指针指向同一个对象，
+	unique_ptr  独占所指的对象
+	weak_ptr    弱引用，指向shareed_ptr管理的对象
+	make_shared 动态分配内存并初始化它，传参数要匹配，不传则进行值初始化返回一个shared_ptr指针。
+
+类似vector，智能指针也是模板,定义方式与模板相同
+可以将智能指针作为判断条件，指向一个对象则为true
+p.swap(q)；swap(p,q);交换指针
+
+shared_ptr初始化：参数传入make_shared返回的指针通过拷贝初始化赋予shared_ptr
+	shared_ptr<int> psd=make_shared<int>(3);注意没有*
+	
+make_shared（）；注意（）
+	动态分配内存并初始化它，返回一个shared_ptr指针。
+	shared_ptr<int> psd=make_shared<int>(3);
+	shared_ptr<string> psd=make_shared<string>("ddw");
+	shared_ptr<int> psd=make_shared<int>();//默认为0
+	简单：
+	auto psd=make_shared<int>();//默认为0
+	auto qsd(psd);
+	
+动态对象计数器：
+	每增加一个指向它的shared_ptr，加1；少一个shared_ptr引用，减1；
+	指向它的shared_ptr变为0时，自动销毁对象释放占用的内存。析构函数完成。
+	按值传递指针指针参数会发生拷贝，引用计数增加。
+
+	如;
+	将动态对象赋予函数局部变量shared_ptr,函数退出后，shared_ptr销毁，对象也销毁。
+	但是，若加一条，return shared_ptr,则外部调用函数也会获得一个引用，函数推出后，
+	局部的shared_ptr销毁，外部的没有，所以对象不会销毁。
+	
+为什么使用动态内存
+	1.不确定对象个数，比如容器
+	2.不确定对象准确类型
+	3.需要在对象之间共享数据，对象销毁不影响共享数据；
+	若共享数据和普通数据一样存在静态区域，对象销毁则数据销毁，
+	无法实现共享，反之将共享数据放置在动态内存，则可以共享
+	
+列表参数代替需要对象的地方是一种隐式转换的应用，explicit可以抑制它。
+	strBlob obj1 = {"ling", "zhang", "wang"}//initializer_list接受形式参数
+
+直接管理内存
+	相对于智能指针来说特别容易出错
+	直接管理内存的类不能依赖于类对象拷贝，赋值和销毁操作的任何默认定义，就是说无法利用那些方便的好处。
+	int *p=new int;//指向未初始化的int
+	string *s=new string;//指向初始化为空的string
+	int *p=new int(1024);//直接初始化，值为1024
+	string *s=new string(10,'a');
+	string *str =new string("aaa");
+	vector<int> *vp=new vector<int>{1,5,6,8,6};
+	int *p=new int();
+	string *s=new string();
+	最好对于内置类型进行值初始化，不然是未定义的；
+	对于有构造函数的类，怎么初始化都可以，最后都是通过默认构造函数初始化。
+
+	auto p=new auto(obj);//p是一个指针，从单一对象的类型分配指针，且对象用obj初始化。
+定位new
+	内存耗尽时会抛出bad_alloc异常，（nothrow）可以阻止。
+	int *p=new (nothrow) int;//分配失败返回空指针
+	bad_allc和nothrow都定义在new中
+	
+
+释放动态内存
+	delete接受一个指针，销毁指向的对象，释放内存。
+	传递给delete的必须是动态内存指针或是空指针。
+	释放其他类型的指针或者多次释放相同的指针行为是未定义的。
+	编译器无法分辨指针指向的是动态内存还是静态内存，也不能分辨一个指针指向的内存是否被释放了。
+	编译会通过，但是有巨大风险。
+	const对象不可以修改，但是可以delete销毁。
+	使用动态指针后要释放，
+	调用 返回动态指针的函数 必须记得释放内存。
+	多个指针指向同一个动态内存，通过其中一个指针delete指针后，内存已被释放，其他指针不能再delete，
+	否则会破坏自由空间。	
+	
+
+避免空悬指针
+	想保留指针又要避免空悬，delete后将nullptr赋予指针，就不指向任何对象。
+	查找指向相同内存的所有指针式很困难的。
+	
+	
+shared_ptr和new结合
+	智能指针的构造函数是explicit，内置指针不可隐式转换为shared_prt，必须直接初始化
+	
+	shared_ptr<int> p1=new int(1024);//错误
+	shared_ptr<int> p1（new int(1024)；//正确
+	p1.reset(new int(20));//p1指向一个新对象
+	shared_ptr<int> clone（int m){		//错误
+		return new int(m);
+		}
+	shared_ptr<int> clone（int m){		//正确
+		return shared_ptr(new int(m));
+		}
+		
+	注意下面:
+	auto pt=new int(15);//pt为普通指针
+	void process(shared_ptr<int> P){//传值方式
+			//
+	}	
+	process（new int(12));//正确
+	process（pt);//错误,普通指针不能转换为智能指针
+	
+	智能指针绑定到内置指针时，后者不能再使用，智能指针会接管内存的释放工作
+	int *x(new int(1024));//x是普通指针
+	void process(shared_ptr<int> P){//传值方式
+			//
+	}	
+	process(shared_ptr<int>(x)){
+	//当退出时，shared_ptr<int>(x)被销毁，内存会被释放
+	//原来的x不可再用
+	}
+	
+多智能指针指向一个动态内存的两个情况
+	情况一
+	智能指针shared_ptr<int> p=new int(10)，q=shared_ptr<int>(p);
+	这是正常的共享动态内存的机制，对象的计数器能正确计数。
+	情况二
+	智能指针shared_ptr<int> p=new int(10)，q=shared_ptr<int>(p.get());
+	这是错误的，p.get()得到一个普通的指针，p.get()是不能delete的内存对象的；
+	但是将p.get()再构建为智能指针q时，p和q不能关联起来，其中一个引用被释放，动态内存就释放了，
+	另一个智能指针也失效了。
+
+有些类
+	并没有析构函数，特别是为C++和C共同设计的类，如connection类；
+
+unique_ptr
+	必须直接初始化
+	unique_ptr<double> p1;
+	unique_ptr<double>	p1(new int(7));
+	unique_ptr独占指向的对象，所以不支持拷贝和赋值。
+	unique_ptr转移指针所有权
+		unique_ptr<string> p2(p1.release());//p1转移给p2
+		p3.reset(p2.rease());//p2放弃控制权，p3先释放资源再获取控制权
+		
+weak_ptr
+		一种不影响智能指针引用计数的智能指针，不控制所指对象的生存期。
+		auto p=make_shared<int>(24);
+		weak_ptr<int> wp(p);
+		if（shared_ptr<int> np=wp.lock()){//lock检查对象存在，则返回一个shared_ptr指针
+			//if中，np与p共享对象
+		}
+		
+动态内存和动态数组	
+	new和delete一次分配和释放一个对象。
+	make_shared<T>();可以指定T为vector，从而分配一个vector对象，但vector本身就是不定长。
+	shared_ptr<int> p=new int; shared_ptr<int> p=new int(2);分配的都是一个int对象。
+	需要多个对象时最好通过标准容器实现，但是也可用动态数组的方式。
+	动态内存 大多数指的是的是一个对象的共享性，生命周期由多个引用决定，等等，和容器元素个数的不确定性；
+	而不是int，string等类型对象的个数不定；
+	动态数组 则是在动态内存的基础上， 可以选择6实现多个对象的不确定分配，是一种特别的动态内存，
+	动态数组实际上不是数组，不能用begin或者范围for处理动态"数组",begin和范围for都需要"维度"。
+	动态数组可以使用for循环：
+		size_t n=get_size();
+		int *p=new int[n];
+		for(int *q=p;q!=p+n;++q){
+			/
+		}
+new动态数组返回指向第一个元素的指针。
+	new分配的对象可以赋予普通指针，要delete；
+	new分配对象可以值初始化一个智能指针shared_ptr；
+	new可以分配对象数组；
+	new可以分配不定长对象数组；
+======================================
+new和动态数组
+	int *p=new int[5];//返回的是指向第一个元素的一个int *
+	或者
+	typedef int arr[6];
+	int *p=new arr;//不需要[]
+	
+	int *p=new int[get_size()];//长度由函数确定，p指向第一个对象
+
+	int *p=new int[n];//n为0时也是合法的。
+默认new对象是初始化的
+	int *p=new int;
+	int *p=new int();
+	int *p=new int[10];
+	int *p=new int[10]();
+	string *s=new string;
+	string *s=new string();
+	int *p=new int[10]{0,1,2,3,4,5,6,7,8,9};
+	int *p=new string[9]{"ds","wd",string(3,'s')};
+
+释放动态数组
+		delete []p;//即使0个对象，【】不能少；逆序销毁
+		
+智能指针unique_ptr管理动态数组,shared_ptr不支持，除非提供删除器
+	unique_ptr<int[]> up1(new int[10]());
+	up1.release();//自动delete[]up1;
+	
+	share_ptr<int> sdp(new int[10],[](int *p){delete []p;} );
+	sdp.reset();//使用自定义的lambda释放动态数组，int *p是sdp的形参
+	
+allocator
+		头文件memory中定义，用于分配原始内存，可让分配内存与构造对象分割
+		定义
+			allocator<string> a;
+		分配内存
+			auto const p=a.allocate(n);
+		初始化
+			auto q=p;
+			a.construct(q++);
+			a.construct(q++,10,'c');
+			a.construct(q++,"hi");
+		销毁对象
+			while(q!=p){
+				a.destory(--q);
+				}
+		释放内存
+			a.deallocate(p,n);
+		
+
+
+
+
+
+
+
+
+
+
+
+
+	

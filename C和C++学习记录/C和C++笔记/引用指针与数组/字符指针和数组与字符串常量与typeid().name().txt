@@ -1,0 +1,133 @@
+总结："字符串常量"具有多面性
+一：可以看作一个整体赋予char*，一并输出；
+二：可以用char*下标访问各个字符
+三："字符串常量"，char*随意组合比较的是指针
+四：与string或者string*比较会自动转换为string，比较的是内容
+五：和数组不同,对于 单个字符char，或者字符数组char[]取字符地址取名赋予char*,
+	char* 反而无法正确输出。
+
+#include <iostream>
+using namespace std;
+//char *,"字符串常量",随意组合，比较的是指针，"字符串常量"本质是char *指针；
+//string 或者 string*与   char* 或者"字符串常量" 之间比较的是 内容，char* 或者"字符串常量"会会自动转换为string；
+//"abc"是字符串常量，一般string定义或者指出来，字符串才是string型，否则实际是const char *；
+// string s="dwd";s=="wfw";string和"wfw"之间的==显然是string重载后的==，可以比较一个string和字符串字面常量，"wfw"会自动转换为string
+
+#include <iostream>
+using namespace std;
+
+int main() {
+	string s = "dwd";
+	string t = "rgrg" + s;
+	string u = s + "oonf";
+	cout << s << " " << t << " " << u << endl;
+	cout << typeid("rgrg").name() << endl;
+	cout << typeid("jkijluwygdq").name() << endl;
+	cout << typeid(s).name() << endl;
+	cout << typeid(t).name() << endl;
+	cout << typeid(u).name() << endl;
+
+	//char *,"字符串常量",比较的是指针，"字符串常量"本质是char *指针；
+	//string 或者 string*与 char* 或者"字符串常量" 之间比较的是 内容，
+	//char* 或者"字符串常量"会会自动转换为string；
+	//
+	//char * 和"字符串常量"
+	char *dc = "ewf";
+	string st = "ewf";
+	cout << typeid(dc).name() << endl;
+	cout << ("ewf" == "ewf") << endl;
+	cout << (dc == "ewf") << endl;
+	cout << dc[0] << endl;
+	cout << dc[1] << endl;
+	cout << dc << endl;
+
+	cout << "====" << endl;
+	char c = 'a';
+	char *hj = &c;
+	cout << hj << endl;
+
+	char c2[] = {'g', 'd', 'f'};
+	char *hj2 = c2;
+	cout << hj2 << endl;
+
+	char *hfw = &c2[1];
+	cout << hfw << endl;
+
+	char *c3 = "dwwffwf";
+	cout << c3 << endl;
+
+	cout << "====" << endl;
+
+	// string s="dwd";s=="wfw";
+	//string和"wfw"之间的==显然是string重载后的==，
+	//可以比较一个string和字符串字面常量，
+	//"wfw"会自动转换为string
+	cout << (dc == st) << endl;//两个指针的内容比较
+	cout << (st == "ewf") << endl;
+	return 0;
+}
+
+
+
+
+
+#include <iostream>
+#include <cstring>
+using namespace std;
+//"abc"是字符串常量，一般string定义或者指出来，字符串才是string型，否则实际是const char *；
+int main() {
+	//char *strcat(char *dest, const char *src)函数原型
+	char *ch1 = "dwdw";
+	char *ch2 = "fef";
+	char *p = new char[strlen(ch1) + strlen(ch2) + 1];
+	//输出char *指针会输出字符串。
+	//字符数组char c[20]={'s','d'};char *t=c；
+	//输出数组名和字符指针都是输出整个字符串
+	cout << "ch1:" << ch1 << " " << "ch2:" << ch2 << endl;
+
+	//输出整数数组名，会输出首元素地址，输出整数指针也是
+	int num[5] = {1, 5, 6, 4};
+	int *pn = num;
+	cout << "num:" << num << endl;
+	cout << "pn:" << pn << endl;
+
+	//char*可以用字符串常量"abc"初始化或赋值，也可以用char*初始化或赋值
+	char *ch1q = ch1 ;
+	cout << "ch1q:" << ch1q << endl;
+	ch1q = ch2;
+	cout << "ch1q:" << ch1q << endl;
+	ch1q = "a";
+	cout << "ch1q:" << ch1q << endl;
+
+	//strcat不能拼接两个字符常量"abc","def"的char *.
+//	strcat(ch1, ch2);
+//	cout << ch1 << endl;
+
+	//strcat可以拼接一个字符数组的char *和一个字符常量的char*
+	char c[20] = {'a', 'b'};
+	cout << "c[20]:" << c << endl;
+	char *q = c;
+	cout << "q:" << q << endl;
+	strcat(q, ch2);
+	cout << "q:" << q << endl;
+
+	strcpy(p, ch1);
+	//strcat可以拼接一个动态数组的char *和一个字符常量的char*
+	strcat(p, ch2);
+	//输出char *动态数组指针会输出字符串。
+	cout << p << endl;
+
+
+
+	char src[15], dest[20];
+
+	strcpy(src,  "This is source");
+	strcpy(dest, "This is destination");
+	strcat(dest, src);
+	printf("最终的目标字符串： |%s|", dest);
+
+	strcpy(dest, src);
+	printf("\n最终的目标字符串： |%s|", dest);
+	return 0;
+}
+

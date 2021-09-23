@@ -1,0 +1,54 @@
+函数指针声明
+
+	01.函数类型由返回类型和形式参数决定，与函数名无关
+		
+	02.声明一个函数指针将函数名换成指针,要用括号
+	bool lengthcmp(const string &,const string &);函数
+	bool (*p)(const string &,const string &);指向lengthcmp的函数指针
+	bool *P(const string &,const string &);名为p的函数，返回类型为boo *
+	
+	03.dectype(function) *p  指向function的函数指针
+	   dectype(function) *   指向function的函数指针类型 
+		
+	
+使用函数指针
+	01.声明函数指针只是指针可以指向函数，要具体使用得将函数赋予它
+	当把函数名作为一个值使用，函数会自动转换为指针，&是可选的
+	bool (*pf)(const string &,const string &);
+	pf=lengtgcmp;
+	pf=&lengtgcmp;//两者等价
+	或者  auto q=lengtgcmp；//没有提前声明，因为函数名会转换为函数指针，auto
+							//会将q类型转为右边一样
+
+	02.可以直接使用指向该函数的指针调用该函数，无须提前解引用
+	bool b1=pf("hello","goodbye");
+	bool b2 (*pf)("hello"，“goodbye”）；//等价调用
+	bool bl3=lengthcmp(const string &,const string &);
+
+	03.指向不同类型函数的函数指针之间没有转换规则，但是可以赋予空或值为0的常量表达式；
+
+重载函数指针
+	01.要通过函类型清晰界定，注意函数返回类型包含在内
+	这样函数指针之间才能成功赋值
+
+函数指针形参
+	和数组类似，不能定义函数类型的形参，但是可以是指向数组的指针，转换是自动的；
+	形参形式上可以用函数类型的，实际上被当作函数指针使用，类似数组形参形式上可以写成数组形式，
+	但是实际是个指针；
+	就像传递数组名自动转换为指向首元素的指针，可以直接将函数名作为实参使用；
+	
+	void useBigger(const string &,const string &，
+	              bool function（const string &,const string &));
+
+	void useBigger(const string &,const string &，
+	              bool (*pf)（const string &,const string &));
+    两者声明等价
+    
+    void useBigger(s1,s2,lengthcmp);//函数名做实参
+
+    
+	
+	
+	
+
+

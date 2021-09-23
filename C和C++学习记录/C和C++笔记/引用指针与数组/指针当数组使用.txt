@@ -1,0 +1,22 @@
+指针可以当数组使用，但是指针本身不检查是否超出数组范围，
+所以指针当数组使用要确保不越界。
+示例一
+int a=25;
+int *p=&a;
+p[0]可用，p[1]越界
+
+示例二
+二维数组传递参数，形参是一个指向一维数组的指针，
+指针当作数组使用遍历二维数组每一个一维数组对象
+
+void func(int n,char (*str)[10]){
+	for(int i=0;i<n;i++){
+	cout<<str[i]<<endl;
+	}
+}
+
+int main(){
+	char ch[3][10]={"swd","dwedw","weddwq"};
+	func(3,ch);
+	return 0;
+}

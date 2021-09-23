@@ -1,0 +1,77 @@
+/*构造函数*
+2021-09-15 23:16
+*/
+
+#include <iostream>
+using namespace std;
+
+
+//构造函数
+//	构造函数名()=default;
+//	构造函数名（形参列表，可不全，可提供默认实参，如果为所有参数都提供默认实参相当于提供了默认构造函数）
+				：初始值列表（可选）
+				{ 函数体，可以空，可以类外定义}；
+class Sale_data {
+	public:
+		Sale_data() = default;
+		Sale_data(string &s): bookno(s) {	};
+
+		Sale_data(const string &s, const unsigned n,
+		          const double rep, const double crrp); //为什么都加const
+		Sale_data(istream &is);
+
+	public:
+		string bookno;//string自带初始化参数
+		unsigned num_sold = 0; //unsigned可以单独表示无符号整数
+		double preprice = 0.0; //原价
+		double currprice = 0.0; //现价
+		double discount = 0.0; //折扣
+
+};
+
+Sale_data::Sale_data(const string &s, const unsigned n,
+
+                     const double rep, const double crrp ) {
+	bookno = s;
+	num_sold = n;
+	preprice = rep;
+	currprice = crrp;
+	if (preprice != 0) {
+		discount = currprice / preprice;
+	}
+}
+
+Sale_data::Sale_data(istream &s) {
+//	s >> (*this).bookno;
+	s >> (*this).bookno >> (*this).currprice  >> (*this).preprice >> (*this).num_sold
+	  ;
+
+}
+
+
+int main() {
+	cout << "输入编号，现价，原价，数量：" << endl;
+	Sale_data obj(cin);
+	cout << obj.bookno << " " << obj.currprice
+	     << " " << obj.num_sold << " "
+	     << obj.preprice << " " << obj.currprice / obj.preprice;
+
+
+	return 0;
+}
+
+
+//成员是const，引用，或者未提供本身的默认构造函数的类类型（string提供了），都必须通过初始值列表提供初始值
+//再考虑定义的构造函数体中的，否则会报错。
+
+
+//参数实际初始化的顺序是按定义顺序，和参数列表，初始值列表顺序无关
+
+//为构造函数形参提供所有默认实参相当于该构造函数同时兼备了默认构造函数的作用，
+//这时必须去掉Sale_data()=default;防止二义性
+
+//如果两个构造函数都提供所有默认实参，相当于他们都兼具默认构造函数的作用，
+//这时调用他们而都不为他们提供参数，相当于有两个默认构造函数可用，会产生二义性，
+//不知道如何选择
+
+//A a();不意味着调用默认构造函数。与A a；不等价

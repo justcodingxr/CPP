@@ -1,0 +1,165 @@
+泛型算法
+	不同类型容器，不同元素类型都能使用的函数，算法与数据结构分离
+	被操作的通常不是容器，而是容器的迭代器构成的范围（输入范围），对元素进行一些处理，
+	算法永远不会执行容器的操作，他们只会运行于迭代器之上，而不会执行容器的操作。
+	算法永远不会改变底层容器的大小。
+	算法可能改变容器保存的元素的值，也可能移动元素，但永远不会直接删除或者添加元素。
+	有一种插入迭代器可以插入元素但是算法本身不会这样做。
+	
+
+find
+	可用于vector找值
+		find（v1.begin(),v1.end());
+	可用于string，也是容器
+		find(s.begin(),s.end(),c);
+	可用于内置数组找值，arry.begin()返回的是内置数组
+		find（arry.begin(),arry.end(），val）；
+	甚至可用于数组找值，数组的begin（a）返回的是指针，但是find可以用
+		find(begin(a),end(a),c);
+	等等，可见算法的泛型
+
+只读算法
+	find，count，accumulate（numeric中），equal（v1.begin(),v1.end(),v2.begin());
+	accumulate（v1.begin(),v1.end(),val);//第三个参数决定了用哪个加法运算符和返回类型
+	int sum=accumulate（v1.begin(),v1.end(),0)；
+	string s=accumulate(v1.begin().v1.end(),"");//错误用于保存字符字面值的是const char*，
+												//const char*不能用+
+	equal（v1.begin(),v1.end(),v2.begin());
+	//char保存字符''；char*保存c风格字符串,char* c[]保存多个c风格数组
+	//比较两个序列是否相等，v2元素数目>=v1;
+	//equal比较运算符是==，string字符串重载了==可以用来比较字符内容，
+	//equal不要求元素类型一样，只要能用==比较就行
+	//而c风格字符串本质是char*类型，==比较的是地址
+	(像equal算法一样的第二个序列只接受一个迭代器表示的算法，都要求第二个元素序列不小于第一个）
+	
+写容器元素的算法（要求原来有元素而不是有容量空间，除非用插入迭代器）
+	fill（v1.begin(),v1.end(),0);//将每个元素赋予0
+	
+	接受一个迭代器作为目的的：
+		fill_n(dest,n,val);
+		fill_n(v1.begin(),n,0);从v1.begin()赋值n个0
+	
+	插入迭代器
+		调用的是push_back
+		vector<int> v1;//空的且没有足够元素
+		fill_n(back_inserter(v1),10,0);//创建v1的插入迭代器，用fill_n写入
+	
+		
+拷贝算法
+	copy
+	接受三个迭代器，第三个是目的序列起始位置，要求后者有足够容量
+	copy也可用于数组拷贝，begin和end获取数组指针当作迭代器用
+	copy(v1.begin()，v1.end(),v2);
+	
+	replace(v1.begin(),v1.end(),2,12);将2换成12
+	replace_copy(v1.begin(),v1.end(),back_inster(v2),2,120）；替换后再利用插入迭代器赋予v2，v1没有替换
+	
+		
+重排容器元素算法
+	sort
+		调用sort会使得元素有序，通过<实现
+		sort(v1.begin(),v1.end());
+		可以为sort设置第三个参数作为条件：一元谓词
+			bool compare(string &a,string &b);
+			{
+				return a>b;
+				}
+			sort(v1.begin(),v1.end(),compare);//这样就按降序排列
+		sort，unique是顺序容器泛型算法，
+		链表有专有的成员函数sort和unique，可以直接操作容器修改容器。
+		直接li.sort();li.unique()不用再erase了，会直接删除重复元素的结点;
+	unique
+		调用unique会将重复元素置后，返回第一个指向重复元素的迭代器
+		auto it=unique（v1.begin(),v1.end()）；//必须先sort？
+	erase
+		删除容器元素需要容器的操作而不是算法
+		v1.erase(it,v1.end());
+	
+	stable_sort
+		保持某个条件的前提，再按字典排序；
+		bool samelen(const string &a, const string &b) {
+			bool bl = false;
+			if (a.size() < b.size())
+				bl = true;
+			return bl;
+		}
+	    stable_sort(v1.begin(),v1.end(),samelen);
+		
+lambda
+	四个可调用对象：函数，函数指针，重载了函数调用符的类，lambda表达式；
+	
+	一个lambda表示一个可调用的代码单元
+	[]捕获所在函数的局部变量，返回类型要尾置法指定，否则可以——>不必要
+	[capture list](parameter list) ——>return type { };//[]和{}不可少，[]通常为空
+	如：
+	auto f=[]{return 5;}//未定义返回类型，根据return推断否则为void，省略——>
+	cout<<f()<<endl;//[]{return 5}lambda调用对象，赋予f，调用f()
+	
+	lambda不能有默认实参，所以调用时形参和实参参数数目必须一致
+	
+	lambda可以在函数中使用，要用到的局部变量要写在捕获列表中；
+	auto p=find_if(v1.begin(),v1.end(),[m](const string &s){return s.size()>m}  );//m是上层函数的局部变量
+	
+	定义函数来取代lambda调用的方法
+		将本来lambda可以直接获取的元素的参数 和 外层函数的局部变量 与定义的函数
+		通过bind绑定为一个新的 调用对象；用占位符代替 本来lambda可以直接获取的元素的参数
+		bool lesslen(const string &a, const string &b) {
+			return a.size() > b.size();
+		}
+		stable_sort(v1.begin(), v1.end(), bind(lesslen, std::placeholders::_1, std::placeholders::_2));
+		std::placeholders::_1代替const string &a,std::placeholders::_2代替const string &b,局部变量直接写
+
+lambda是函数对象或者说是函数对象在使用方式上的简化；不被其他的地方使用时类似于匿名类。
+	编译器为lambda表达式产生一个类，类中有调用运算符；
+	默认情况，lambda不改变捕获的变量，因此它对应的类的调用运算符是const 成员函数。	
+	
+	lambda产生的类不含有默认构造函数，赋值运算符，默认析构函数，
+	是否有拷贝/移动构造函数 视捕获的数据成员类型决定（不是视参数列表决定），相应的使用函数对象时参数也取决于它；		
+	
+			
+			
+可调用对象
+	函数。函数指针，lambda，bind绑定的新对象，重载调用运算符的类的函数对象
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

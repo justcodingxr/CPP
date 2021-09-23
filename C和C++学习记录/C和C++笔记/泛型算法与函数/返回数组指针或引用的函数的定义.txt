@@ -1,0 +1,30 @@
+返回 数组指针或引用 的函数：
+一、类型别名法
+typedef int arr[20];
+using arr=int[10];
+arr *func();//返回的就是 int （*p）[10]
+
+二、直接定义,(形式上 将数组引用 数组指针 的名字换成函数名）
+
+
+int（*function（int a））[10]；可以对函数的返回结果 解引用，
+							  函数的返回结果是一个指向10整数的指针；
+							  对函数解引用得到一个数组,
+							  function是一个函数
+int（&function（int a））[10]；
+
+int （*p) [10];可以对p解引用，p是指向10整数的数组指针
+							对p解引用得到一个数组
+int  (&r)[10];
+三、尾置类型
+auto func(int a)->int(* )[10];
+
+auto func（int a)->int(& )[10];
+
+四、decltype
+ int arr[]={1,6,5,8];
+ decltype(arr) *func(int m);//dectype的结果是一个数组，要加*才是数组指针
+ decltype(arr) &func(int m);//dectype的结果是一个数组，要加*才是数组指针
+ 
+ 
+ 

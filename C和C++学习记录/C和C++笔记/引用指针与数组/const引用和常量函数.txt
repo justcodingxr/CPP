@@ -1,0 +1,64 @@
+常量成员函数：
+在函数参数列表后面加const，修饰隐式this，
+表示this是一个指向常量的指针，也就表示这个成员函数不可修改this指向的对象
+
+const指针
+*前，所指之物是常量，*后，指针式常量
+类型前后都一样
+*靠近类型，指针名都一样
+const char *p="hello"；char const *p="hello"；const char* p="hello"；都是所指之物是常量
+char* const p="hello";指针是常量
+const char* const p；指针和指针所指之物都是常量
+
+const引用
+和指针不同，指针可以修改，引用只初始化一次绑定；
+所以声明常量引用const一般写前面，不用分&前后；
+普通引用和常量引用
+普通引用，可能失误修改参数内容，而且接受的实参类型受到限制，
+无法将常量对象，字面值常量或者需要进行类型转换的对象赋予一个普通引用；
+一般用常量引用比较好，当需要修改参数的内容，设置为普通引用较好；
+常量引用既可以接收常量对象，字面值常量或者需要进行类型转换的对象；
+
+如
+i.combine(s);i是Sale_data对象，s是string对象
+对象.combine(对象）
+              ^
+              |     隐式转换
+              ^
+对象.combine(string)
+（a).Sale_data &combine(Sale_data);正确，隐式转换
+（b).Sale_data &combine(Sale_data &);错误，隐式转换的对象无法传给一个普通引用
+（c).Sale_data &combine(const Sale_data &);正确，隐式转换的对象赋予常量引用
+（d).Sale_data &combine(const Sale_data &) const;可以传参，但是这是一个常量函数，
+												不可以修改调用者对象，与combine的功能不符合
+expcilit可以抑制构造函数的隐式转换
+
+
+常量成员不改变调用者对象的状态不意味着它返回的对象是不可被改变的
+	string &operator *（）const{
+		auto p=check（curr,"curr不在范围内");
+		//p或者为空或者得到一个指向vector的动态内存指针
+		return (*p)[curr];
+		//解引用这个指针得到这个vector，再用下标获得元素并返回元素给string &
+	}
+	//operator不可改变调用它的对象，但是返回的对象不是const的
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

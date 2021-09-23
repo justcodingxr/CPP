@@ -1,0 +1,307 @@
+整数0的ASCII码 40
+NULL和'\0'是一个ASCII码 0
+
+char c[10];
+c[9]='\0';c[9]='NULL';c[9]=0;三者等价，都是末尾表示结束符
+c[9]=0;是个巧合，整数赋予char字符，是当作ASCII码赋予的，
+0码值对应字符NULL和'\0'
+'\0'和null的ASCII码是0；
+1.目标文件缺少启动代码和库函数；链接器来链接得到可执行代码
+2.目标文件和可执行文件都由机器指令组成，指令由数字表示
+3.c语言由Unix而生
+4.c编译器，程序有多个源代码文件，链接目标文件生成可执行文件会保留目标文件
+5.cc xx.c 得到a.out，若不重命名会被下一次可执行文件覆盖
+6.GNC（gcc，含gcc c编译器），cc可代替gcc
+7.getchar（）便于程序暂停
+8.c++ win32控制台 空项目 ，几乎所有c程序可以作为c++程序运行
+9.stdio.h 输入输出
+10.ANSI之前的编译器，main(void)省略void
+11.include相当于复制粘贴命令。#表示编译器之前
+12.头文件可以包含常量，函数名等，函数实际代码在库文件中
+13.变量声明最好放顶部，很多编译器不支持放中间；首次使用前必须声明
+14.变量第一个不能用数字
+15. .2%f表示两个小数输出
+16.char可以表示小证书
+17. 一般一个int一个字长
+18.%d对应后面int类型的常量，变量，表达式；后面不提供会打印任意值
+   编译器不会发现错误，因为printf设计时参数不确定
+19.前缀0八进制；0x或0X十六进制；
+	%o %x %X %#o %#x %#X
+	%u表示无符号整数
+	%ld打印long int
+	%lx十六进制打印long
+	%lo八进制打印long
+	%hd十进制显示short
+	%ho八进制显示short
+	%lu打印无符号长整形
+	%p指针
+20.unsigned表示无符号，可表示非负数
+21.short int,unsigned int,long int,long long int;可以省略int
+   short int<=int;long int>=int;
+22.char字符型(字母，数字，标点），存的是整数，0`127一个字节；
+	char初始化不必背ASCII码，用 char grade='A'，若是ASCII码相当于char grade=65
+	前者移植性高；
+	char grade = 'A';
+	printf("%c\n",grade);
+	printf("%d\n", grade);转换决定显示，而不是存储方式决定
+	单引号括起来叫字符常量；双引号是字符串；
+	字符数组输出转换%s；
+	char name[50];
+	scanf("%s",name);
+	printf("%s",name);
+23.C语言将字符常量视为int型32位，char本身为8位
+	'FATE'四个独立的8位ASCII字符
+	char grade='FATE'赋给8位的grade
+	grade值为'E'
+24.转义字符，char c='\n';printf("%c",c);打印c相当于换行
+25.双引号中的字符无需单引号括起来，转义字符可以嵌入字符串中
+26._Bool类型，1表示true，0表示false，所以_Bool实际也是整数类型，仅占1位
+27.float至少6位有效数字10的-37到10的正37
+   double至少13位有效字数
+28. float表示方法 6.13e-23   5.23e+16 36.15e33 2E5  19.5 3.E16 .14E-5
+29.浮点型，float，double，编译器默认为double型，加f或F可以避免；6.25f 2.13F
+float sum；
+sum=2.0+3.2；2.0和3.2会默认为精度double，结果按float截断，会减慢速度；
+30.%f可以打印float和double的数据；%e打印指数型数据
+31.c语言没有字符串但是可以处理字符串
+32.%zd或%u可以转换sizeof（）返回的数据类型
+   printf("int %zd types\n",sizeof(int));
+33.printf缓冲区何时输出，1缓冲区满 2遇到换行符\n 3需要输入 4fflush
+34.c语言中，字符串只能存储在char类型数组中
+   c语言中，字符串都以 \0（空字符）结尾，相当于ASCII码 0，由计算机自动放入
+35. scanf读到空格，制表符，换行符就不再读取；需要用到其他输入函数
+36.字符串常量“x”和字符常量；后者是基本数据类型，前者为派生；前者相当于'x'和‘\0’
+37.strlen（）计算字符串中字符的个数，不计'\0'
+38.sizeof把不可见的'\0'也记录在内；对于类型要用（），对于特定量不用
+39.数字表示最小字段宽度，.数字表示小数位数 %5.2d
+40.%-10d 左对齐 10个字段 打印整数，-是标记
+41. 05.3d不少于5个字段，不够补0，小数保留3位
+42.printf参数和转换：根据数据类型参数传入栈中，float会被拓展位double传入
+   根据转换说明将数据显示，没有float的转换说明，因为会拓展成double传入
+43.printf返回输出字符串的个数，错误则返回负数
+44.printf打印字符串，不可以在中间换行，用\n可以；用\+enter可以；
+	链接方法printf("gygig","iyyii");
+45.scanf,读取基本数据类型，加&；把字符串读入字符数组，不加&。
+46.scanf的例外，%c转换说明，会读取每个字符包括空白
+47.scanf和printf转换说明的区别：
+	float和double，printf都使用%f %e %E %g %G
+	转换说明将输入解释为不同类型，scanf只用于float，double要用lf、le，lg
+48.scanf中的*放在%和转换字符之间表示跳过输入项，scanf("%*d %*d %d",&n);
+49.c可以多重赋值 a=b=c;
+50.左值，可以被赋值的数据对象
+51.printf("7./4 is %1.2f\n", 7. / 4);
+	printf("7/4. is %1.2f\n",7/4.);
+52.sizeof运算符返回size_t类型的返回值，是一个无符号整数类型
+53.重命名数据类型 typedef double d;d num;
+54.%求模运算，只能用于整数
+55.含有负整数求模，符号取决于第一个数符号；
+56.一个变量多次出现在同一个表达式或一个变量出现在一个函数的多个参数中
+	不要用递增或递减符号，因为编译器执行顺序无法预料；
+57.赋值=表达式的值和左边值一样，关系表达式的值是0、1
+58.大部分语句以；结尾，最简单的语句是空语句 ；  8；和3+4；是无用语句
+	return 0；是一种跳转语句
+59.声明不是表达式语句
+60.while循环中只有一条语句时不必用花括号
+61.while中作为测试条件的表达式属于完整表达式
+62.char  short自动转化为int；float自动转化为double
+63.scanf返回成功读取的项数
+64.复合语句花括号括起来
+65.#include <math.h> fabs()可以返回一个浮点值的绝对值
+66.非0值是为真
+67._Bool类型变量只存真和假，赋予非零值，该变量会设置为1.
+68.赋值优先级<关系优先级<算术优先级
+69.关系优先级有两种
+	高：>= <=
+	低：！= ==
+	左到右结合
+70. - + ++ —— sizeof同级；-和+是取非2取正
+71.初始化计数器
+	与有限次的值作比较
+		递增计数器
+72.逗号运算符，值为整个表达式右侧值；
+73.出口条件循环至少做一次
+	do 
+		statement
+		while(expression);是否再次循环
+74.字符数组可以存字符，也可以存字符串；
+	当末尾是\0时，既是字符串也是字符数组；
+75.编译器不会发现下表越界的错误；
+76.putchar()和getchar()只处理字符，不需要转换说明；
+   char ch1;
+	ch1 = getchar();
+	while (ch1 != '\n') {
+		if (ch1 == ' ')
+			putchar(ch1);//已经打印，后期显示,过程仍是一个个打印
+		else
+			putchar(ch1 + 1);//字符实际是作为整数存储的
+		ch1 = getchar();			 
+	}
+77.ctype.h中有一系列对字符处理的函数
+	如果是下列参数则返回真
+	isalpha();字母
+	isalnum();字母或数字
+	isblank（）；空白，空格，制表，换行
+	islower();小写字母
+	isspace();小写字母
+	isupper();大写字母
+	ispunct（）；标点符号
+78.ctype中的字符映射函数
+	tolower（);大写转小写
+	toupper();小写转大写
+79.iso646.h可以将逻辑运算符号&&，||，！代替为and，or，not
+	逻辑运算符的对象通常是关系运算符，从左往右
+优先级()>！,++,--,+,->*,/>+,-，>关系运算符>&&>||>赋值=
+80.c保证一旦发现某个某个元素让整个表达式无效则立即停止运算
+	C语言中唯一的三元运算符，条件运算符 ？；每个运算对象都是一个表达式
+	y=(x<0) ?  -x:x;得到绝对值
+	amx=（a>b)? a:b;
+8.1循环辅助
+continue和break；
+	3种循环都可以使用continue语句，continue跳过本层的本次循环的剩余部分，
+	直接进入下一次迭代，跳过的是循环曾，即使continue出现在if语句中，
+	跳过的是if所在的循环层本次迭代剩余部分；对于while和do while跳到测试条件。
+	while((ch=getchar())!='\n')
+		continue;//跳过输入行的剩余部分，响应单字符，最后丢弃的是\n,下一个读取下一行的首字母。
+	break；则是会最终止包含它的循环，执行下面的代码。
+	
+8.2 switch（整型表达式或char型）{
+		    case 值1非范围 ：
+				语句；
+				break；
+			case 值2非范围 ：
+				 语句；
+				 break；	
+			...//最后一个case的break可有可无
+			default :
+				语句；
+	}
+	break用于跳出switch，执行下面的语句；
+	未匹配到执行default
+	没有break，继续执行下面未匹配的语句
+8.3 goto 标签名;
+	标签名:标签语句；可以在goto前面或后面
+	goto可以用于跳出break不能跳出的多层循环。
+8.4c处理的是流而不是直接处理文件，stdin和stdout两个流键盘输入和屏幕显示
+	getchar(),putchar(),printf(),scanf()是标准io包成员，处理这两个流
+	标准io包是比标准库更高层次的函数，可以避免操作系统的差异。
+8.5 getchar和scanf检测文件末尾会返回EOF，一个与字符集不同的值
+	getchar（）返回int型
+8.6 putchar（ch）；ch为int还是char都可以输出字符
+8.7重定向输入输出。将键盘，屏幕换为文件；./echo_ling < inform.c
+	echo_ling可执行：
+	#include <stdio.h>
+	int main(void) {
+	int ch;
+	 while ((ch = getchar()) != EOF)
+		putchar(ch);
+		return 0;
+	}
+
+重定向输出： ./echo_ling >words.c (下一行首部ctrl+d)结束键盘输入
+组合重定向	./echo_ling>words.c<inform.c
+			./echo_ling<inform.c>words.c顺序无关
+			
+8.8内含机器指令的不是文本文件
+8.9自定义头文件，#include " xx.h"  可以自定义符号常量和函数原型；
+9.1
+	puts();只显示字符串而且会在末尾加\n自动
+	#define MAXLENGTH 81
+	#define MSG "a string const"
+	int strings() {
+	char words[MAXLENGTH] = "a string arry";
+	char words2[30] = "part1 ""part2";//字面量链接
+	const char  * p = "p string";//字符串是一个字符数组，“xx”视为指针，
+	可以用字符指针指向；
+	puts("some strings:");
+	puts(MSG);
+	puts(words);
+	puts(p);
+	words[0] = 'b';
+	puts(words);
+	puts（words2）；
+	printf("%s %p %c\n", "you", "are", *"sb");
+	const char f[] = "friend";
+	const char f1[] = { 'f','r','i','e','n','d','\0' };
+	//两者等价，只有初始化时不用指定数组大小
+9.2char heart[] = "hello";
+	heart[1] = 'a';//合法；数组保存的是字符串的副本
+	printf("%s", heart);
+	printf("\n");
+	printf("hello");
+	printf("\n");
+
+	char  * h = "happy";
+	h[1] = 'e';//非法；指针和字符串是同一内存
+	printf("%s", h);
+	printf("\n");
+	printf("happy");
+9.3指针的地址，指针的值都用%p可以打印；其中指针的值是它指向的地址；
+	字符串“ ”相当于指针，值也是指向字符串的地址
+	int p_and_str() {
+	printf("\n================================================\n");
+		printf("p_and_str()  \n");
+	const char *str1 = "you are great!";
+	const char *str2;
+	str2 = str1;
+	printf("\"you are great!\"  value is %p\n", "you are great!");
+	printf("str1=%s  address %p value %p\n",str1, &str1, str1);
+	printf("str2=%s  address %p value %p\n", str2,&str2, str2);
+
+}
+9.4
+	char *name;
+	scanf("%s",name);//scanf信息要输入指定的参数，而name是未初始化指针
+	可能指向任意地方
+	char name[20];//分配了地1
+	址
+	scanf("%s",name);
+9.5segmentation fault 分段错误，访问未分配的内存
+9.6间接运算符*优先级低于递增
+9.7strcat(str1,str2);连接两个字符串，存入第一个，返回第一个参数；
+   第二个字符串不变
+9.8 '\0'编码为0，用于标志字符串末尾，其他字符都不是0编码，\0不是字符一部分；
+    NULL有一个与任何数据的有效地址不对应的值，遇到文件末尾时返回一个有效地址；
+    '\0'与NULL都可以用数值来表示，不要混淆；
+    同时一些空白字符是字符，' '编码对应32，'tab'对应9；
+
+       
+
+=======================================
+#include <time.h>
+srand(time(0));
+	food.fd.x = (rand() % (WIN_WIDTH/11))*10;
+产生0到1的数据
+double ff = rand() % 10000;
+double r = ff / 10000;
+https://github.com/lingxr/genetic-algorithm-/blob/main/genertic
+fclose关闭成功返回0，否则返回EOF；
+
+
+char * s_gets(char *st,int n){
+	char * re;
+	char *find;
+	re=fgets(st,n,stdin);
+	if(re){
+		find=strchr(re,'\n');
+		if(find)
+			*find='\0';
+		else
+			while((ch=getchar())!='\n'))
+			continue;
+	
+	}
+	return re;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

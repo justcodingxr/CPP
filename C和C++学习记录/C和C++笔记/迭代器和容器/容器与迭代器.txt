@@ -1,0 +1,204 @@
+容器与迭代器
+顺序容器的元素是“顺序”存储的，底层是数组和链表链表容器的元素虽然不是“连续”存储的，但是也是“顺序”存储的。
+关联容器元素是“按值”存储，底层是哈希表红黑树。
+容器初始化
+	
+	一、初始化为另一个容器的拷贝
+	要求容器类型和元素类型一致
+	c(c1);
+	二、范围拷贝初始化，等效于初次赋值
+	容器无要求，元素能转化就行
+	C c1(b,e);b,e为迭代器；
+	三、大小参数
+	仅顺序容器使用
+	C c1(4,"ss");
+	四、列表初始化
+	隐含指定大小
+	C c1{"aa","dd"}
+	C c1={"aa","cc"}
+
+容器赋值	
+1.遍历各个元素赋值
+2.初始化赋值，容器的各个初始化方法
+3.assign替换
+	assign可用于不同但是相容的容器的元素替换，替换左边所有元素
+	形式一：c.assign(b,e);b,e可以是迭代器或下标等
+	形式二：c(10,"aa");用10个aa替换
+4.insert
+    insert返回指向第一个加入的元素的迭代器
+	v1.insert(p,x)//单个插入
+	v1.insert(p,n,x)//多个插入
+	v1.insert(p,b,e)//范围插入
+	v1.insert(v1.begin(), v2.begin(), v2.end());
+	v1.insert(v1.begin() + 1, 2, "aa");
+	v1.insert(v1.end(), "xxx");
+容器大小操作
+	empty size max_size	
+	容器的关系运算符取决于元素的关系运算符
+	容器和元素类型要一致
+
+顺序容器中访问元素
+	c.back()	获取c的尾元素的引用
+	c.front()   获取c的首元素的引用
+	c.at(n)     获取下标为n的元素引用
+	c[n]        获取下标n的元素的引用
+	容器中访问元素的成员函数front，back，下标，at返回的都是引用
+
+提供随机访问的容器string，vector,deque,arry都支持下标运算符
+
+删除元素
+	c.pop_back()删除尾元素
+	c.pop_front()删除首元素
+	c.erase(p)	删除p所指元素，返回后一位迭代器
+	c.erase(a,b)删除范围内的元素，返回b后一位迭代器,a==b时则什么也不发生
+	c.clear()	删除所有元素，c.clear(a.begin(),a.end())
+	
+调整容器大小
+	resize(n)//
+	resize(n,t)//若有新增赋为t，若元素时类类型要用构造函数
+	capacity();//实际可用容量
+	size（);//实际元素个数
+	reserve（）；//预期分配空间，少补多不退
+	resize（）；//修改容器元素，或删或补
+	shrink_to_fit();//退回多余容量
+
+删除插入操作不要保存end（）迭代器
+
+
+string的额外操作，string是元素为char的容器
+string支持顺序容器的赋值运算符，assign，insert，erase，初始化，还有他自己的insert，erase
+append末尾追加
+	构造string的其他方法（一般容器的初始化有）
+	substr
+	s.erase(i,1);删除一个小标为i的字符
+
+char型vector赋予string
+	vector<char> v1 = {'s', 'd', 'w', 'f', 'w', 'e', 'p', 'i'};
+	string s(v1.begin(), v1.end());//容器的范围拷贝
+	string s4(v1.data(), 8);//类似于数组，v1.data()获取的时首元素地址
+    string s2(v1.begin(), 8);//错误，迭代器不同与指针和data（）
+
+适配器
+	栈适配器：
+		s.pop();
+		s.push(item);
+		s.top();
+		s.emplace(args);
+	队列适配器：queue和priority_queue
+===============================================================
+关联容器
+	按关键字保存元素(关联数组）,
+		map（比如字典），map的元素是pair
+		multimap关键字可重复
+		只保存关键字
+		set
+		multiset关键字可重复
+	有序容器的关键字类型必须定义元素的比较方法，除非是可以直接用标准库<比较的,如int。
+		自定义比较操作紧跟元素类型后面,通常是函数指针；
+		bool compareIsbn(const Sale_data &lhs,const Sale_data &rhs){
+			return lhs.isbn()<rhs.isbn();
+			}
+		bool (*pf)(const Sale_data &lhs,const Sale_data &rhs);
+		定义有序关联容器
+			multiset<Sale_data,dectype(compareIsbn) *> m1(compareIsbn);
+			dectype(compareIsbn) * 函数指针指出关键字比较操作要用的函数，
+			m1(compareIsbn)中compareIsbn函数名做指针用，作为构造函数的参数，初始化m1；
+			m1的迭代器类型
+				pair<Sale_data,pf>::iterator
+	无序集合
+	unorder_map
+	unorder_set
+	unorder_multimap
+	unorder_multiset
+关联容器可以容器拷贝初始化，迭代器范围初始化，值初始化。	
+
+关联容器有自己的find成员函数，a.find9(val),也可以用算法find(b,e,val);都返回迭代器	
+
+pair类型，头文件utility
+	具有默认构造函数
+	声明
+		pair<string,int>;//和int一样可以做形参
+	.p.first和p.second访问数据成员
+	return pair<string,int>（）;返回隐式构造的空pair
+	return {string，n};         返回一个pair
+	return pair<string,int>{str,n};显示构造pair
+	makir_pair(str,n);          利用函数生成pair
+	简化法 push_back({s,n});
+	简化法 push_back(make_pair(s,n));
+	对于map的pair，第一个元素不可以改变，迭代器可以像指针一样访问元素
+	迭代器遍历map，ser，multimap，multiset是按关键字升序遍历；
+
+关联容器迭代器类型
+	pair<string,int>::iterator
+
+关联容器操作
+	key_type类型		map的key，set的value和key一样
+	mapped_type类型	map的后部
+	value_type类型	对于map是pair，对于set是key
+	
+	添加元素
+		insert，因为关联容器自动字典序，按值查找，红黑数存储，底层和顺序容器不同
+		插入时，不指出位置,参数写迭代器范围或插入对象
+		set
+		1.set1.insert(v1.begin(),v1.end());
+		2.set2.insert({1,3,5,9});
+		map以pair对象插入
+		1.mp1.insert({s,n});
+		2.mp1.insert(make_pair(s,n));
+		3.mp1.insert(pair<string,int>(s,n));
+		4.mp1.insert(map<string,int>::value_type(s,n));
+	
+	
+	删除元素 待定
+关联容器与算法
+	我们通常不对关联容器使用泛型算法，因为key是const的，算法不好修改
+	也有一些刻度泛型算法可用以关联容器，比如map用find搜索给定的元素是用的
+	顺序搜索，比map的成员函数find慢得多，后者是按值查找
+	
+	
+	
+	
+	
+	
+	
+	
+		
+===============================================================		
+一些特殊的迭代器
+	
+	反向迭代器reverse_iterator
+		rbegin，rend，crbegin，crend，除了forward_list其他容器都支持反向迭代器
+		反向迭代器 移动 方向按照 ++方向，使用.base()生成相邻的普通迭代器可以调转移动。
+	
+	插入迭代器front_inserter,back_inserter,inserter
+		insert和插入迭代器，insert是一个容器函数，
+		插入迭代器front_inserter,back_inserter,inserter用于构造迭代器
+		front_inserter,back_inserter参数是一个容器名字,返回的是容器最新元素的迭代器
+		inserter可以有两个参数，第二个指出插入迭代器的位置，不会跟新
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
