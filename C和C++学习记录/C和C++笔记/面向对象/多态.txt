@@ -87,6 +87,6 @@ p2->fcn();			//没有覆盖虚函数，运行时调用Base::virtual int fcn()
 p3->fcn();          //覆盖虚函数,运行时调用D2::virtual int fcn()
 
 D1 *q1=&d1; D2 *q2=&d2;
-p2->f2();          //错误，Base没有f2()成员，多态用在
+p2->f2();          //错误，Base没有f2()成员
 q1->f2();          //运行时调用D1::virtual void f2()
 q2->f2();          //运行时调用D2::virtual void f2()
