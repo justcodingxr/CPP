@@ -5,6 +5,7 @@
 四：与string或者string*比较会自动转换为string，比较的是内容
 五：和数组不同,对于 单个字符char，或者字符数组char[]取字符地址取名赋予char*,
 	char* 反而无法正确输出。
+参考：https://zhuanlan.zhihu.com/p/391431717?utm_source=wechat_session&utm_medium=social&utm_oi=798493013839073280&utm_campaign=shareopn
 
 #include <iostream>
 using namespace std;
