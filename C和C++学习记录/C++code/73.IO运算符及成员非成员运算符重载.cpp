@@ -1,4 +1,4 @@
-/*73.IOÔËËã·û¼°³ÉÔ±·Ç³ÉÔ±ÔËËã·ûÖØÔØ
+/*73.IOè¿ç®—ç¬¦åŠæˆå‘˜éæˆå‘˜è¿ç®—ç¬¦é‡è½½
 2021-09-21 18:12
 */
 #include <iostream>
@@ -27,12 +27,12 @@ class SaleData {
 
 istream &operator>(istream &is, SaleData &sd) {
 	is >> sd.no >> sd.num >> sd.price;
-	if (is) { //Ò»´ÎĞÔ¼ìÑéistream
+	if (is) { //ä¸€æ¬¡æ€§æ£€éªŒistream
 		sd.sumprice = sd.num * sd.price;
 	} else {
-		sd = SaleData(); //Ä¬ÈÏ¹¹Ôìº¯Êı
+		sd = SaleData(); //é»˜è®¤æ„é€ å‡½æ•°
 	}
-	return is;//·µ»ØÄ³¸öÊäÈëÀïÁ÷¶ÔÏó
+	return is;//è¿”å›æŸä¸ªè¾“å…¥é‡Œæµå¯¹è±¡
 }
 
 ostream &operator<<(ostream &os, const SaleData &sd) {
@@ -40,7 +40,7 @@ ostream &operator<<(ostream &os, const SaleData &sd) {
 	return os;
 }
 
-SaleData &SaleData::operator-=(const SaleData &b) {//³ÉÔ±ÖØÔØÍâ²¿¶¨Òå²»¿É¼ûÃû
+SaleData &SaleData::operator-=(const SaleData &b) {//æˆå‘˜é‡è½½å¤–éƒ¨å®šä¹‰ä¸å¯è§å
 	if (this->no == b.no) {
 		this->num -= b.num;
 		this->price -= b.price;
@@ -52,7 +52,7 @@ SaleData &SaleData::operator-=(const SaleData &b) {//³ÉÔ±ÖØÔØÍâ²¿¶¨Òå²»¿É¼ûÃû
 
 SaleData operator-(const SaleData &a, const SaleData &b) {
 	SaleData temobj = a;
-	temobj -= b; //ÓÃµÄ³ÉÔ±ÖØÔØ·û
+	temobj -= b; //ç”¨çš„æˆå‘˜é‡è½½ç¬¦
 	return temobj;
 
 }
@@ -60,18 +60,18 @@ SaleData operator-(const SaleData &a, const SaleData &b) {
 
 int main() {
 	SaleData obj1;
-	cout << "ÊäÈëno,num,price:" << endl;
+	cout << "è¾“å…¥no,num,price:" << endl;
 	string s = "ling 20 8.0";
 	istringstream in(s);
 	//ifstream in("data.txt");
-	cin > obj1;//·ÀÖ¹Óëcin³åÍ»
+	cin > obj1;//é˜²æ­¢ä¸cinå†²çª
 	cout << "obj1:" << obj1 << endl;
 
-	//SaleData obj2();Æ¥Åä²»µ½ºÏÊÊµÄ¹¹Ôìº¯Êı£¬Ä¬ÈÏ¹¹Ôìº¯ÊıÊÇÒª´«²ÎÊıµÄ
-	//SaleData obj2£»µ÷ÓÃÄ¬ÈÏ¹¹Ôìº¯Êı£¬µÈ¼ÛÓÚSaleData obj2(string &,int,double,double){}ÓĞËùÓĞÊµ²Î;
-	//¶ø²»ÊÇSaleData obj2()£»
+	//SaleData obj2();ç›¸å½“äºå£°æ˜äº†ä¸€ä¸ªè¿”å›SakeDataçš„å‡½æ•°ï¼ŒåŒ¹é…ä¸åˆ°åˆé€‚çš„æ„é€ å‡½æ•°ï¼Œé»˜è®¤æ„é€ å‡½æ•°æ˜¯æ— æ³•æ˜¾ç¤ºè°ƒç”¨çš„ï¼Œæˆ–è€…ç­‰ä»·äºç»™å‡ºæ‰€æœ‰å®å‚
+	//SaleData obj2ï¼›è°ƒç”¨é»˜è®¤æ„é€ å‡½æ•°ï¼Œç­‰ä»·äºSaleData obj2(string &,int,double,double){}æœ‰æ‰€æœ‰å®å‚;
+	//è€Œä¸æ˜¯SaleData obj2()ï¼›
 	SaleData obj2;
-	cout << "ÊäÈëno,num,price:" << endl;
+	cout << "è¾“å…¥no,num,price:" << endl;
 	cin > obj2;
 	cout << "obj2" << obj2 << endl;
 
