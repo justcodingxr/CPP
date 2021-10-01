@@ -1,107 +1,108 @@
 #include <iostream>
 using namespace std;
-template <typename T>//ÓÃclassºÍtypename¶¼ĞĞT´ú±íÄ³ÖÖÔªËØÀàĞÍ
+//å¯ä»¥ç”¨ä»¥ä¸€ç»´åº¦åŠ¨æ€æ•°ç»„å®ç°é¡ºåºè¡¨
+template <typename T>//ç”¨classå’Œtypenameéƒ½è¡ŒTä»£è¡¨æŸç§å…ƒç´ ç±»å‹
 class LinearList {
 private:
-	int m_length;//µ±Ç°ÔªËØ¸öÊı
+	int m_length;//å½“å‰å…ƒç´ ä¸ªæ•°
 	int m_MaxSize;
-	T *element;//¶¯Ì¬Êı×éµÚÒ»¸öÔªËØÀàĞÍµÄÖ¸Õë
+	T *element;//åŠ¨æ€æ•°ç»„ç¬¬ä¸€ä¸ªå…ƒç´ ç±»å‹çš„æŒ‡é’ˆ
 public:
-	LinearList(int Maxsize);//¹¹Ôìº¯Êı´´½¨±í
-	~LinearList();//Îö¹¹º¯ÊıÉ¾³ı±í
-	//µÚk¸öÔªËØ²åÈëÔªËØx
-	LinearList<T> &insert(int k, const T &x); //·µ»ØLinearList<T> &ÀàÄ£°åÀàĞÍµÄÒıÓÃ,
-	bool isEmpty() const;//ÅĞ¿Õ
-	int getLength() const;//·µ»ØÔªËØ¸öÊı
-	bool getData(int k, T &x) const; //µÚk¸öÔªËØ´æÈëx£¬²»´æÔÚ·µ»Øfalse
-	bool modifyData(int k, const T &x); //ĞŞ¸ÄÔªËØ
-	int find(const T &x);//²éÕÒÔªËØxÎ»ÖÃ²¢·µ»Ø
+	LinearList(int Maxsize);//æ„é€ å‡½æ•°åˆ›å»ºè¡¨
+	~LinearList();//ææ„å‡½æ•°åˆ é™¤è¡¨
+	//ç¬¬kä¸ªå…ƒç´ æ’å…¥å…ƒç´ x
+	LinearList<T> &insert(int k, const T &x); //è¿”å›LinearList<T> &ç±»æ¨¡æ¿ç±»å‹çš„å¼•ç”¨,
+	bool isEmpty() const;//åˆ¤ç©º
+	int getLength() const;//è¿”å›å…ƒç´ ä¸ªæ•°
+	bool getData(int k, T &x) const; //ç¬¬kä¸ªå…ƒç´ å­˜å…¥xï¼Œä¸å­˜åœ¨è¿”å›false
+	bool modifyData(int k, const T &x); //ä¿®æ”¹å…ƒç´ 
+	int find(const T &x);//æŸ¥æ‰¾å…ƒç´ xä½ç½®å¹¶è¿”å›
 	LinearList<T> &deleteByindex(int k);
-	//É¾³ıÔªËØ£¬·µ»ØLinearList<T>&ÀàĞÍ
+	//åˆ é™¤å…ƒç´ ï¼Œè¿”å›LinearList<T>&ç±»å‹
 	LinearList<T> &deleteByKey(const T &k, const T &y);
-	//É¾³ıÔªËØ£¬·µ»ØLinearList<T>&ÀàĞÍ
-	void output(ostream &out) const;//Êä³ö
+	//åˆ é™¤å…ƒç´ ï¼Œè¿”å›LinearList<T>&ç±»å‹
+	void output(ostream &out) const;//è¾“å‡º
 
 };
 
-//¹¹Ôìº¯Êı
+//æ„é€ å‡½æ•°
 template <typename T>
 LinearList<T>::LinearList(int Maxsize) {
 	m_MaxSize = Maxsize;
 	m_length = 0;
-	element = new T[m_MaxSize]; //elementÖ¸ÏòÊı×é¶ÔÏóµÚÒ»¸öÔªËØ
+	element = new T[m_MaxSize]; //elementæŒ‡å‘æ•°ç»„å¯¹è±¡ç¬¬ä¸€ä¸ªå…ƒç´ 
 }
 
-//Îö¹¹º¯Êı
+//ææ„å‡½æ•°
 template <typename T>
 LinearList<T>::~LinearList() {
-	delete[]element;//ÊÍ·ÅÊı×é¶ÔÏó[]element
+	delete[]element;//é‡Šæ”¾æ•°ç»„å¯¹è±¡[]element
 }
 
-//²åÈëÔªËØ
+//æ’å…¥å…ƒç´ 
 template <typename T>
 LinearList<T>& LinearList<T>::insert(int k, const T &x) {
-	//µÚÒ»¸öÔªËØµ½×îºóÒ»¸öÔªËØµÄÎ»ÖÃ¿ÉÒÔ±»²åÈëÈ¡´ú£¨ÏÈ²»¹ÜÊı×éÔ½½ç£©
+	//ç¬¬ä¸€ä¸ªå…ƒç´ åˆ°æœ€åä¸€ä¸ªå…ƒç´ çš„ä½ç½®å¯ä»¥è¢«æ’å…¥å–ä»£ï¼ˆå…ˆä¸ç®¡æ•°ç»„è¶Šç•Œï¼‰
 	if (k < 1 || k > m_length + 1) {
-		cout << "ÔªËØÏÂ±êÔ½½ç£¬Ìí¼Ó²åÈëÊ§°Ü" << endl;
+		cout << "å…ƒç´ ä¸‹æ ‡è¶Šç•Œï¼Œæ·»åŠ æ’å…¥å¤±è´¥" << endl;
 
 	}
 	else
 	{
-		if (m_length == m_MaxSize) { //ÏÖÓĞÔªËØ¸öÊı==×î¶àÔªËØ¸öÊı
-			cout << "Êı×éÒÑ¾­Âú£¬²»ÄÜ²åÈë" << endl;
+		if (m_length == m_MaxSize) { //ç°æœ‰å…ƒç´ ä¸ªæ•°==æœ€å¤šå…ƒç´ ä¸ªæ•°
+			cout << "æ•°ç»„å·²ç»æ»¡ï¼Œä¸èƒ½æ’å…¥" << endl;
 		}
 		else
 		{
-			//±»²åÈëÔªËØµ½×îºóÒ»¸öÔªËØÈ«²¿ºóÒÆ¶¯£¬×¢ÒâÊı×éÏÂ±êÊÇÔªËØÎ»´Î-1,Òª´ÓºóÃæ¿ªÊ¼ÒÆ¶¯·ÀÖ¹¸²¸Ç
-			for (int i = m_length; i >= k; i--) { //±»¸³ÖµµÄÊı×éÏÂ±ê´Ókµ½length
+			//è¢«æ’å…¥å…ƒç´ åˆ°æœ€åä¸€ä¸ªå…ƒç´ å…¨éƒ¨åç§»åŠ¨ï¼Œæ³¨æ„æ•°ç»„ä¸‹æ ‡æ˜¯å…ƒç´ ä½æ¬¡-1,è¦ä»åé¢å¼€å§‹ç§»åŠ¨é˜²æ­¢è¦†ç›–
+			for (int i = m_length; i >= k; i--) { //è¢«èµ‹å€¼çš„æ•°ç»„ä¸‹æ ‡ä»kåˆ°length
 				element[i] = element[i - 1]; //[k-1,length-1] [k,length]
 			}
-			element[k - 1] = x; //×¢ÒâÊı×éÏÂ±êÊÇÔªËØÎ»´Î-1
+			element[k - 1] = x; //æ³¨æ„æ•°ç»„ä¸‹æ ‡æ˜¯å…ƒç´ ä½æ¬¡-1
 			m_length++;
 		}
 	}
 	return *this;
 }
 
-//ÅĞ¿ÕisEmpty() const
+//åˆ¤ç©ºisEmpty() const
 template <typename T>
 bool LinearList<T>::isEmpty() const {
 	return m_length == 0;
 }
 
-//·µ»ØÔªËØ¸öÊı
+//è¿”å›å…ƒç´ ä¸ªæ•°
 template <typename T>
 int LinearList<T>::getLength() const {
 	return m_length;
 }
 
-//È¡ÔªËØ
+//å–å…ƒç´ 
 template <typename T>
 bool LinearList<T>::getData(int k, T &x) const {
 	if (k < 1 || k > m_length) {
-		cout << "k²»ÔÚ·¶Î§" << endl;
+		cout << "kä¸åœ¨èŒƒå›´" << endl;
 		return false;
 	}
 	else {
-		x = element[k - 1]; //ÏÂ±ê=Î»´Î-1
+		x = element[k - 1]; //ä¸‹æ ‡=ä½æ¬¡-1
 		return true;
 	}
 }
 
-//ĞŞ¸ÄÔªËØ
+//ä¿®æ”¹å…ƒç´ 
 template <class T>
 bool LinearList<T>::modifyData(int k, const T &x) {
 	if (k < 1 || k > m_length) {
-		cout << "k²»ÔÚ·¶Î§" << endl;
+		cout << "kä¸åœ¨èŒƒå›´" << endl;
 		return false;
 	}
 	else {
-		element[k - 1] = x; //ÏÂ±ê=Î»´Î-1
+		element[k - 1] = x; //ä¸‹æ ‡=ä½æ¬¡-1
 		return true;
 	}
 }
-//²éÕÒ
+//æŸ¥æ‰¾
 template <class T>
 
 int LinearList<T>::find(const T &x) {
@@ -109,39 +110,39 @@ int LinearList<T>::find(const T &x) {
 		if (element[i] == x)
 			return i + 1;
 	}
-	return 0;//0Î»´ÎÔò²»´æÔÚ
+	return 0;//0ä½æ¬¡åˆ™ä¸å­˜åœ¨
 }
 
-//É¾³ıÔªËØ
+//åˆ é™¤å…ƒç´ 
 template <typename T>
 LinearList<T> &LinearList<T>::deleteByindex(int k) {
 	if (k < 1 || k> m_length) {
-		cout << "k²»ÔÚ·¶Î§" << endl;
+		cout << "kä¸åœ¨èŒƒå›´" << endl;
 		return *this;
 	}
 	else {
 		for (int i = k - 1; i <= m_length - 2; i++) {
-			element[i] = element[i + 1]; //[k,length-1],[k-1,length-2],ÒÆ¶¯ÔªËØ
+			element[i] = element[i + 1]; //[k,length-1],[k-1,length-2],ç§»åŠ¨å…ƒç´ 
 		}
 		m_length -= 1;
 		return *this;
 	}
 }
 
-//É¾³ı
+//åˆ é™¤
 template <typename T>
 
 LinearList<T> &LinearList<T>::deleteByKey(const T &x, const T &y) {
 	int index = find(x);
 	if (index != 0) {
-		return deleteByindex(index, y); //É¾³ıÔªËØ£¬´æÈëy
+		return deleteByindex(index, y); //åˆ é™¤å…ƒç´ ï¼Œå­˜å…¥y
 	}
 	else {
-		cout << "É¾³ıÊ§°Ü" << endl;
+		cout << "åˆ é™¤å¤±è´¥" << endl;
 		return *this;
 	}
 }
-//Êä³ö,
+//è¾“å‡º,
 template <typename T>
 void LinearList<T>::output(ostream &os) const {
 	for (int i = 0; i < m_length; i++) {
@@ -149,7 +150,7 @@ void LinearList<T>::output(ostream &os) const {
 	}
 }
 
-//ÖØÔØÔËËã·û,Ê¹µÃÀàÍâ¿ÉÓÃ<<Êä³öLinearList£»Ê¹µÃÀàÍâ²ÎÊıso´«ÖÁÀàÄÚº¯Êıoupput
+//é‡è½½è¿ç®—ç¬¦,ä½¿å¾—ç±»å¤–å¯ç”¨<<è¾“å‡ºLinearListï¼›ä½¿å¾—ç±»å¤–å‚æ•°soä¼ è‡³ç±»å†…å‡½æ•°oupput
 template <typename T>
 ostream& operator<<(ostream& ostr, const LinearList<T> &list) {
 	list.output(ostr);
