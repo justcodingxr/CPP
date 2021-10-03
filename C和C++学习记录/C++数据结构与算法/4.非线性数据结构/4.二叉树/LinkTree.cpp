@@ -1,7 +1,7 @@
-//¶þ²æÊ÷µÄ²åÈëÉú³É£¬²åÈëÖ÷Ê÷
-//£¨1£©ÈôÎª¿ÕÊ÷£¬k¾Í×÷Îª¸ù½Úµã
-//£¨2)  Èô²»¿Õ£ºÈôµÈÓÚ¸ù½Úµã£¬Ö±½Ó·µ»Ø£»ÈôÐ¡ÓÚ¸ù½Úµã£¬ £¨Èô×óº¢×Ó²»´æÔÚÔò²åÈë£©£¬²åÈë×ó×ÓÊ÷£»
-//																	Èô´óÓÚ¸ù½Úµã£¬£¨ÈôÓÒº¢×Ó²»´æÔÚÔò²åÈë£©£¬²åÈëÓÒ×ÓÊ÷
+//äºŒå‰æŽ’åºæ ‘çš„æ’å…¥ç”Ÿæˆï¼Œæ’å…¥ä¸»æ ‘
+//ï¼ˆ1ï¼‰è‹¥ä¸ºç©ºæ ‘ï¼Œkå°±ä½œä¸ºæ ¹èŠ‚ç‚¹
+//ï¼ˆ2)  è‹¥ä¸ç©ºï¼šè‹¥ç­‰äºŽæ ¹èŠ‚ç‚¹ï¼Œç›´æŽ¥è¿”å›žï¼›è‹¥å°äºŽæ ¹èŠ‚ç‚¹ï¼Œ ï¼ˆè‹¥å·¦å­©å­ä¸å­˜åœ¨åˆ™æ’å…¥ï¼‰ï¼Œæ’å…¥å·¦å­æ ‘ï¼›
+//																	è‹¥å¤§äºŽæ ¹èŠ‚ç‚¹ï¼Œï¼ˆè‹¥å³å­©å­ä¸å­˜åœ¨åˆ™æ’å…¥ï¼‰ï¼Œæ’å…¥å³å­æ ‘
 
 #include <iostream>
 #include "BST.h"
@@ -13,7 +13,9 @@ int main() {
 	BinTree<int> bt;
 	createBST(a, 10,bt);
 	bt.preOrder(bt.getRoot());
+	cout << "====" << endl;
 	bt.inOrder(bt.getRoot());
+	cout << "====" << endl;
 	bt.postOrder(bt.getRoot());
 	cout << "====" << endl;
 	return 0;
